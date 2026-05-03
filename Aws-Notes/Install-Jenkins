@@ -1,0 +1,56 @@
+
+# Jenkins Installation Script (Ubuntu)
+
+```bash
+#!/bin/bash
+
+set -e
+
+echo "🔄 Updating system..."
+sudo apt update -y
+sudo apt upgrade -y
+
+# -----------------------------
+# Install Java (OpenJDK 21)
+# -----------------------------
+echo "☕ Installing Java..."
+sudo apt install -y openjdk-21-jre
+
+java -version
+
+# -----------------------------
+# Install Jenkins
+# -----------------------------
+echo "🔑 Setting up Jenkins repository..."
+
+sudo mkdir -p /etc/apt/keyrings
+
+# Add Jenkins GPG key (LTS stable 2026 key)
+sudo wget -q -O /etc/apt/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+
+# Add Jenkins repo
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | \
+  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+echo "📦 Installing Jenkins..."
+sudo apt update -y
+sudo apt install -y jenkins
+
+# -----------------------------
+# Start Jenkins service
+# -----------------------------
+echo "🚀 Starting Jenkins..."
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+echo "✅ Jenkins status:"
+sudo systemctl status jenkins --no-pager
+
+# -----------------------------
+# Show admin password
+# -----------------------------
+echo "🔐 Jenkins Initial Admin Password:"
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+```
