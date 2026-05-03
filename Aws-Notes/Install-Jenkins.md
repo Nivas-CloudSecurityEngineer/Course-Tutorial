@@ -52,5 +52,4 @@ sudo systemctl status jenkins --no-pager
 # -----------------------------
 echo "🔐 Jenkins Initial Admin Password:"
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-
 ```
