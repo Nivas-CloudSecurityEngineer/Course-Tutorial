@@ -32,31 +32,58 @@ sudo systemctl status docker
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
-# INSTALL JENKINS ON UBUNTU
-
-Updated :
+# INSTALL JENKINS ON UBUNTU - USE 24.04 verison
 
 #!/bin/bash
 
-# Update package list
+set -e
+
+echo "🔄 Updating system..."
 sudo apt update -y
+sudo apt upgrade -y
 
-# Install required dependencies
-sudo apt install -y fontconfig openjdk-21-jre
+# -----------------------------
+# Install Java (OpenJDK 21)
+# -----------------------------
+echo "☕ Installing Java..."
+sudo apt install -y openjdk-21-jre
 
-# Verify Java installation
 java -version
 
-# Add Jenkins repository key
-sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+# -----------------------------
+# Install Jenkins
+# -----------------------------
+echo "🔑 Setting up Jenkins repository..."
+
+sudo mkdir -p /etc/apt/keyrings
+
+# Add Jenkins GPG key (LTS stable 2026 key)
+sudo wget -q -O /etc/apt/keyrings/jenkins-keyring.asc \
   https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
 
-# Add Jenkins repository
+# Add Jenkins repo
 echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | \
   sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-# Install Jenkins
+echo "📦 Installing Jenkins..."
+sudo apt update -y
 sudo apt install -y jenkins
+
+# -----------------------------
+# Start Jenkins service
+# -----------------------------
+echo "🚀 Starting Jenkins..."
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+echo "✅ Jenkins status:"
+sudo systemctl status jenkins --no-pager
+
+# -----------------------------
+# Show admin password
+# -----------------------------
+echo "🔐 Jenkins Initial Admin Password:"
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
