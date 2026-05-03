@@ -34,6 +34,54 @@ sudo systemctl status docker
 
 # INSTALL JENKINS ON UBUNTU
 
+Updated :
+
+#!/bin/bash
+
+# Update package list
+sudo apt update -y
+
+# Install required dependencies
+sudo apt install -y fontconfig openjdk-21-jre
+
+# Verify Java installation
+java -version
+
+# Add Jenkins repository key
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+
+# Add Jenkins repository
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | \
+  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Install Jenkins
+sudo apt install -y jenkins
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+How to use it
+Create the file:
+
+```copy
+nano jenkins.sh
+```
+
+Paste the script and save.
+Make it executable:
+```
+chmod +x jenkins.sh
+```
+
+Run it:
+
+./jenkins.sh
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+# INSTALL JENKINS ON UBUNTU
+
+
 #!/bin/bash
 sudo apt update -y
 wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee /etc/apt/keyrings/adoptium.asc
